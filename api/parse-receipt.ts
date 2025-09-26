@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import OpenAI from 'openai';
-import { applyCors } from './_cors';
+import { applyCors } from './_cors.js';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_KEY! });
 
