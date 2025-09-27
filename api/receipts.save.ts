@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { getDb } from '../lib/mongo.js';
 import { applyCors } from './_cors.js';
+import { CURRENT_USER_ID, HOUSEHOLD_ID } from '../lib/constants.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   applyCors(res);
@@ -15,8 +16,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const db = await getDb();
     const now = new Date();
+    const dayMs = 24 * 60 * 60 * 1000;
 
     const receiptDoc: any = {
+      userId: CURRENT_USER_ID,
+      householdId: HOUSEHOLD_ID,
       purchaseDate: new Date(parsed.purchaseDate),
       images,
       nonFoodIgnored: parsed.nonFoodIgnored ?? [],
@@ -26,11 +30,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     };
     const r = await db.collection('receipts').insertOne(receiptDoc);
 
+    // Build a product lookup by displayName (case-insensitive exact match)
+    const escapeRegex = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const names = Array.from(new Set((parsed.items as any[]).map((i: any) => String(i.name || '').trim()).filter(Boolean)));
+    const nameToProduct = new Map<string, any>();
+    await Promise.all(names.map(async (n) => {
+      const prod = await db.collection('products').findOne({ displayName: { $regex: `^${escapeRegex(n)}$`, $options: 'i' } });
+      if (prod) nameToProduct.set(n.toLowerCase(), prod);
+    }));
+
     const items = (parsed.items as any[]).map((li) => {
+      const displayName = String(li.name || '').trim();
       const purchaseDate = parsed.purchaseDate ? new Date(parsed.purchaseDate) : now;
-      const expiryDate = li.expiryDate ? new Date(li.expiryDate) : null;
+      const matched = displayName ? nameToProduct.get(displayName.toLowerCase()) : null;
+      const shelf = matched?.defaultShelfLifeDays;
+      const explicitExpiry = li.expiryDate ? new Date(li.expiryDate) : null;
+      const computedExpiry = typeof shelf === 'number' ? new Date(purchaseDate.getTime() + shelf * dayMs) : new Date(purchaseDate.getTime() + 3 * dayMs);
+      const expiryDate: Date | null = explicitExpiry || computedExpiry;
       return {
-        displayName: String(li.name || '').trim(),
+        householdId: HOUSEHOLD_ID,
+        ownerId: CURRENT_USER_ID,
+        productId: matched?._id || null,
+        displayName,
         qty: Number(li.qty || 0),
         unit: li.unit || 'count',
         price: typeof li.price === 'number' ? li.price : null,

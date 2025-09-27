@@ -52,6 +52,9 @@ function Receipt() {
         expiryDate: li.expiryDate,
         reasoning: li.reasoning,
       })))
+      // Immediately persist to DB for demo simplicity
+      const saved = await Api.saveReceipt(obj as any, images)
+      console.log('Saved receipt', saved)
     } finally {
       setLoading(false)
     }

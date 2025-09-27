@@ -81,10 +81,10 @@ export const Api = {
 
   productsSearch: (q: string) => http<{ ok: boolean; results: { displayName: string }[] }>(`/api/products.search?q=${encodeURIComponent(q)}`),
 
-  createOffer: (householdId: string, itemId: string, qtyOffered: number, expiresAt?: string) =>
+  createOffer: (itemId: string, qtyOffered: number, expiresAt?: string) =>
     http<{ ok: boolean; offerId: string }>(
       '/api/share-offers.create',
-      { method: 'POST', body: JSON.stringify({ householdId, itemId, qtyOffered, expiresAt }) }
+      { method: 'POST', body: JSON.stringify({ itemId, qtyOffered, expiresAt }) }
     ),
 
   claimOffer: (offerId: string) =>
@@ -99,8 +99,8 @@ export const Api = {
       { method: 'POST', body: JSON.stringify({ userId, type, payload }) }
     ),
 
-  notificationsFeed: (userId?: string) =>
-    http<{ ok: boolean; notifications: any[] }>(`/api/notifications.feed${userId ? `?userId=${encodeURIComponent(userId)}` : ''}`),
+  notificationsFeed: () =>
+    http<{ ok: boolean; notifications: any[] }>(`/api/notifications.feed`),
 
   householdsCreate: (name: string) =>
     http<{ ok: boolean; householdId: string }>(

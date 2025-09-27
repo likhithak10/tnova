@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { getDb } from '../lib/mongo.js';
 import { applyCors } from './_cors.js';
 import type { ObjectId } from 'mongodb';
+import { CURRENT_USER_ID, HOUSEHOLD_ID } from '../lib/constants.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   applyCors(res);
@@ -23,6 +24,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const createdAt = new Date();
       receiptPurchaseDate = purchaseDate ? new Date(purchaseDate) : null;
       const receiptDoc = {
+        userId: CURRENT_USER_ID,
+        householdId: HOUSEHOLD_ID,
         storeName: storeName ?? null,
         purchaseDate: receiptPurchaseDate ?? createdAt,
         total: total ?? null,
@@ -50,14 +53,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const matched = displayName ? nameToProduct.get(displayName.toLowerCase()) : null;
       const shelf = matched?.defaultShelfLifeDays;
       const explicitExpiry = raw.expiryDate ? new Date(raw.expiryDate) : null;
-      const expiryDate: Date | null = explicitExpiry || (typeof shelf === 'number' ? new Date(basePurchaseDate.getTime() + shelf * dayMs) : null);
+      // Per spec: use product default shelf life; otherwise fallback +3 days
+      const computedExpiry = typeof shelf === 'number' ? new Date(basePurchaseDate.getTime() + shelf * dayMs) : new Date(basePurchaseDate.getTime() + 3 * dayMs);
+      const expiryDate: Date | null = explicitExpiry || computedExpiry;
 
       return {
         ...raw,
+        householdId: HOUSEHOLD_ID,
+        ownerId: CURRENT_USER_ID,
         displayName,
         purchaseDate: basePurchaseDate,
         expiryDate,
         receiptId,
+        storeName: (receipt && receipt.storeName) ? receipt.storeName : (raw.storeName || null),
         createdAt: now,
         updatedAt: now,
       };

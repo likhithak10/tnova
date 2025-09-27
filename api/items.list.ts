@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { getDb } from '../lib/mongo.js';
 import { applyCors } from './_cors.js';
+import { HOUSEHOLD_ID } from '../lib/constants.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   applyCors(res);
@@ -14,7 +15,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   };
 
   const db = await getDb();
-  const filter: any = {};
+  const filter: any = { householdId: HOUSEHOLD_ID };
   const trimmed = (q || '').trim();
   if (trimmed) {
     filter.displayName = { $regex: trimmed, $options: 'i' };
@@ -26,7 +27,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const num = Math.max(1, Math.min(200, Number(limit) || 50));
   const items = await db.collection('items')
     .find(filter)
-    .sort({ updatedAt: -1 })
+    .sort({ createdAt: -1 })
     .limit(num)
     .toArray();
 
