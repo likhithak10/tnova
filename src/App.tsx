@@ -1,14 +1,65 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { Api } from './lib/api'
+import { app, registerOrLogin, login, logout } from './lib/auth'
 
 function App() {
+  const [authed, setAuthed] = useState(!!app.currentUser)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const [authError, setAuthError] = useState<string | null>(null)
+  const [householdName, setHouseholdName] = useState<string | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+    const load = async () => {
+      if (!authed) { setHouseholdName(null); return }
+      try {
+        const res = await Api.householdGet()
+        if (!cancelled) setHouseholdName(res.household?.name || null)
+      } catch {
+        if (!cancelled) setHouseholdName(null)
+      }
+    }
+    load()
+    return () => { cancelled = true }
+  }, [authed])
+  const doRegister = async () => {
+    setAuthError(null)
+    try {
+      await registerOrLogin(email, password)
+      setAuthed(true)
+    } catch (e: any) {
+      setAuthError(e?.message || 'Registration failed')
+    }
+  }
+  const doLogin = async () => { await login(email, password); setAuthed(true) }
+  const doLogout = async () => { await logout(); setAuthed(false) }
+
   return (
     <div style={{ maxWidth: 960, margin: '0 auto', padding: 16 }}>
       <header style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 16 }}>
-        <h2 style={{ margin: 0, flex: 1 }}>Cook-e-Nova — Receipt Parser</h2>
+        <h2 style={{ margin: 0, flex: 1 }}>
+          Cook-e-Nova — Receipt Parser {authed && householdName ? `· ${householdName}` : ''}
+        </h2>
+        {authed ? (
+          <button onClick={doLogout}>Logout</button>
+        ) : null}
       </header>
-      <Receipt />
+      {authed ? (
+        <Receipt />
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxWidth: 360, margin: '0 auto' }}>
+          <input placeholder="email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+          <input placeholder="password" type="password" value={password} onChange={(e)=>setPassword(e.target.value)} />
+          {authError && <div style={{ color: 'red' }}>{authError}</div>}
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button onClick={doRegister}>Register</button>
+            <button onClick={doLogin}>Login</button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

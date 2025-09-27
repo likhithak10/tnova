@@ -1,7 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { getDb } from '../lib/mongo.js';
 import { applyCors } from './_cors.js';
-import { CURRENT_USER_ID, HOUSEHOLD_ID } from '../lib/constants.js';
+import { ObjectId } from 'mongodb';
+import { HOUSEHOLD_ID } from '../lib/constants.js';
+import { getUserIdFromRequest } from '../lib/auth.verify.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   applyCors(res);
@@ -14,9 +16,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const db = await getDb();
+  const userIdStr = await getUserIdFromRequest(req);
+  if (!userIdStr) return res.status(401).json({ ok: false, error: 'Unauthorized' });
+  const currentUserId = new ObjectId(userIdStr);
   const doc = {
     householdId: HOUSEHOLD_ID,
-    userId: userId ?? CURRENT_USER_ID,
+    userId: userId ? new ObjectId(userId) : currentUserId,
     type,
     payload: payload ?? {},
     createdAt: new Date(),

@@ -36,10 +36,12 @@ export type ItemDoc = {
 const API_BASE = (import.meta as any).env?.VITE_API_BASE || '';
 
 async function http<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(API_BASE + path, {
-    headers: { 'Content-Type': 'application/json' },
-    ...init,
-  });
+  // Read token from a global hook set by src/lib/auth.ts to avoid a direct import
+  const token: string | null = (globalThis as any)?.__getAccessToken?.() ?? null;
+  const headers: any = { 'Content-Type': 'application/json', ...(init?.headers || {}) };
+  if (token) headers.Authorization = `Bearer ${token}`;
+
+  const res = await fetch(API_BASE + path, { ...(init || {}), headers });
   if (!res.ok) {
     let message = `HTTP ${res.status}`;
     try {
@@ -106,6 +108,11 @@ export const Api = {
     http<{ ok: boolean; householdId: string }>(
       '/api/households.create',
       { method: 'POST', body: JSON.stringify({ name }) }
+    ),
+
+  householdGet: () =>
+    http<{ ok: boolean; household: { _id: string; name: string | null } | null }>(
+      '/api/households.get'
     ),
 
   // Join removed with auth
