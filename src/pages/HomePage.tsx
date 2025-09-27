@@ -1,10 +1,14 @@
 import { useState, useRef } from 'react'
+import { TrashIcon } from '../components/Icons'
 
 const HomePage = () => {
     const [isScanning, setIsScanning] = useState(false)
     const [scannedItems, setScannedItems] = useState<string[]>([])
     const [showCamera, setShowCamera] = useState(false)
     const [showUpload] = useState(false)
+    const [showAddModal, setShowAddModal] = useState(false)
+    const [newItemName, setNewItemName] = useState('')
+    const [newItemCategory, setNewItemCategory] = useState('')
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const handleScanReceipt = () => {
@@ -52,10 +56,22 @@ const HomePage = () => {
     }
 
     const handleManualAdd = () => {
-        const newItem = prompt('Add a new grocery item:')
-        if (newItem) {
-            setScannedItems([...scannedItems, `🛒 ${newItem}`])
+        setShowAddModal(true)
+    }
+
+    const handleAddItem = () => {
+        if (newItemName.trim()) {
+            setScannedItems([...scannedItems, `🛒 ${newItemName}`])
+            setNewItemName('')
+            setNewItemCategory('')
+            setShowAddModal(false)
         }
+    }
+
+    const handleCloseModal = () => {
+        setShowAddModal(false)
+        setNewItemName('')
+        setNewItemCategory('')
     }
 
     return (
@@ -70,7 +86,9 @@ const HomePage = () => {
                     </div>
                 </div>
                 <div className="summary-card">
-                    <div className="card-icon">⭐</div>
+                    <div className="card-icon">
+                        <TrashIcon size={24} />
+                    </div>
                     <div className="card-content">
                         <div className="card-number">2</div>
                         <div className="card-label">Expiring Soon</div>
@@ -81,7 +99,9 @@ const HomePage = () => {
             {/* Items Expiring Soon Section */}
             <div className="expiring-section">
                 <div className="section-header">
-                    <span className="section-icon">⭐</span>
+                    <span className="section-icon">
+                        <TrashIcon size={20} />
+                    </span>
                     <h2 className="section-title">Items Expiring Soon!</h2>
                 </div>
 
@@ -122,7 +142,10 @@ const HomePage = () => {
             <div className="inventory-section">
                 <div className="section-header">
                     <h2 className="section-title">My Kitchen Inventory</h2>
-                    <button className="add-item-btn">
+                    <button
+                        className="add-item-btn"
+                        onClick={handleManualAdd}
+                    >
                         <span className="add-icon">➕</span>
                         <span>Add Item</span>
                     </button>
@@ -222,6 +245,70 @@ const HomePage = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Add Item Modal */}
+            {showAddModal && (
+                <div className="modal-overlay" onClick={handleCloseModal}>
+                    <div className="add-item-modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h3>➕ Add New Item</h3>
+                            <button className="close-btn" onClick={handleCloseModal}>
+                                ✕
+                            </button>
+                        </div>
+
+                        <div className="modal-content">
+                            <div className="input-group">
+                                <label htmlFor="item-name">Item Name</label>
+                                <input
+                                    id="item-name"
+                                    type="text"
+                                    className="kawaii-input"
+                                    placeholder="e.g., Fresh Strawberries"
+                                    value={newItemName}
+                                    onChange={(e) => setNewItemName(e.target.value)}
+                                />
+                            </div>
+
+                            <div className="input-group">
+                                <label htmlFor="item-category">Category</label>
+                                <select
+                                    id="item-category"
+                                    className="kawaii-input"
+                                    value={newItemCategory}
+                                    onChange={(e) => setNewItemCategory(e.target.value)}
+                                >
+                                    <option value="">Select Category</option>
+                                    <option value="fruits">🍓 Fruits</option>
+                                    <option value="vegetables">🥬 Vegetables</option>
+                                    <option value="dairy">🥛 Dairy</option>
+                                    <option value="meat">🥩 Meat</option>
+                                    <option value="bakery">🍞 Bakery</option>
+                                    <option value="beverages">🥤 Beverages</option>
+                                    <option value="snacks">🍿 Snacks</option>
+                                    <option value="other">📦 Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="modal-actions">
+                            <button
+                                className="kawaii-button secondary-button"
+                                onClick={handleCloseModal}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="kawaii-button"
+                                onClick={handleAddItem}
+                                disabled={!newItemName.trim()}
+                            >
+                                Add Item
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

@@ -1,10 +1,14 @@
 import { useState } from 'react'
 
-const SettingsPage = () => {
+interface SettingsPageProps {
+    darkMode: boolean
+    toggleDarkMode: () => void
+}
+
+const SettingsPage = ({ darkMode, toggleDarkMode }: SettingsPageProps) => {
     const [notifications, setNotifications] = useState(true)
     const [expiryReminders, setExpiryReminders] = useState(true)
     const [communitySharing, setCommunitySharing] = useState(true)
-    const [darkMode, setDarkMode] = useState(false)
 
     return (
         <div className="settings-page">
@@ -75,7 +79,7 @@ const SettingsPage = () => {
                         <input
                             type="checkbox"
                             checked={darkMode}
-                            onChange={(e) => setDarkMode(e.target.checked)}
+                            onChange={toggleDarkMode}
                         />
                         <span className="toggle-slider"></span>
                     </label>

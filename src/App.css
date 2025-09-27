@@ -1,19 +1,54 @@
 /* Kawaii Strawberry Matcha Design System */
 :root {
-  /* Strawberry Matcha Color Palette */
+  /* Strawberry Matcha Color Palette - Based on your beautiful palette */
   --strawberry-pink: #ff6b9d;
+  /* Vibrant medium pink */
   --strawberry-light: #ffb3d1;
+  /* Light pastel pink */
   --strawberry-pastel: #ffc1d6;
+  /* Very light pastel pink */
   --matcha-green: #a8d5a8;
+  /* Light pastel green */
   --matcha-dark: #7fb069;
+  /* Medium muted green */
   --matcha-pastel: #c8e6c8;
+  /* Very light pastel green */
   --cream: #fff8f0;
-  --soft-white: #fefefe;
+  /* Soft white/cream */
+  --soft-white: #ffffff;
+  /* Pure white */
   --warm-gray: #8b7355;
+  /* Earthy warm gray */
   --earth-brown: #6b4e3d;
+  /* Earth brown */
   --light-gray: #f5f5f5;
+  /* Very light gray */
   --medium-gray: #9e9e9e;
+  /* Medium gray */
   --dark-gray: #424242;
+  /* Dark gray */
+
+  /* Dark Mode Colors - Strawberry Matcha Dark Theme */
+  --dark-bg: #1a1a1a;
+  /* Deep dark background */
+  --dark-surface: #2a2a2a;
+  /* Dark surface */
+  --dark-card: #333333;
+  /* Dark card background */
+  --dark-text: #ffffff;
+  /* Pure white text */
+  --dark-text-secondary: #b0b0b0;
+  /* Light gray text */
+  --dark-border: #404040;
+  /* Dark borders */
+
+  /* Additional Strawberry Matcha Colors */
+  --strawberry-accent: #ff8fab;
+  /* Accent pink */
+  --matcha-accent: #8fbc8f;
+  /* Accent green */
+  --strawberry-shadow: rgba(255, 107, 157, 0.3);
+  --matcha-shadow: rgba(168, 213, 168, 0.3);
 
   /* Sustainability Colors */
   --eco-green: #4a7c59;
@@ -260,13 +295,29 @@ body {
 
 .notification-badge {
   position: relative;
+  background: none;
+  border: none;
   display: flex;
   align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.notification-badge:hover {
+  background: var(--strawberry-pastel);
+  transform: scale(1.05);
 }
 
 .bell-icon {
   font-size: 1.2rem;
   color: var(--dark-gray);
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
 }
 
 .badge-count {
@@ -285,9 +336,48 @@ body {
   font-weight: bold;
 }
 
+.settings-button {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.settings-button:hover {
+  background: var(--strawberry-pastel);
+  transform: scale(1.05);
+}
+
+.settings-button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.settings-button:active {
+  outline: none;
+  box-shadow: none;
+}
+
 .settings-icon {
   font-size: 1.2rem;
   color: var(--dark-gray);
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  transition: all 0.3s ease;
+}
+
+.settings-button:hover .settings-icon {
+  color: var(--strawberry-pink);
+  transform: rotate(90deg);
 }
 
 /* Bottom Navigation */
@@ -315,6 +405,18 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.nav-button:active {
+  outline: none;
+  box-shadow: none;
 }
 
 .nav-button:hover {
@@ -330,6 +432,15 @@ body {
 
 .nav-icon {
   font-size: 1.2rem;
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  transition: all 0.3s ease;
+}
+
+.nav-button.active .nav-icon {
+  stroke: var(--soft-white);
 }
 
 .nav-label {
@@ -351,15 +462,32 @@ body {
   background: var(--soft-white);
   border-radius: 20px;
   padding: 1.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  border: 1px solid var(--light-gray);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 2px solid var(--strawberry-light);
   display: flex;
   align-items: center;
   gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.15);
+  border-color: var(--strawberry-pink);
 }
 
 .card-icon {
   font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-icon svg {
+  width: 2rem;
+  height: 2rem;
+  stroke: currentColor;
+  fill: none;
 }
 
 .card-content {
@@ -394,6 +522,16 @@ body {
 .section-icon {
   font-size: 1.2rem;
   margin-right: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-icon svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  stroke: currentColor;
+  fill: none;
 }
 
 .section-title {
@@ -435,17 +573,26 @@ body {
 .expiring-item,
 .inventory-item {
   background: var(--soft-white);
-  border-radius: 20px;
-  padding: 1rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  border: 1px solid var(--light-gray);
+  border-radius: 15px;
+  padding: 0.75rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  border: 2px solid var(--strawberry-light);
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  align-items: flex-start;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+  flex-wrap: wrap;
+}
+
+.expiring-item:hover,
+.inventory-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.15);
+  border-color: var(--strawberry-pink);
 }
 
 .item-icon {
-  font-size: 2rem;
+  font-size: 1.2rem;
 }
 
 .item-info {
@@ -453,7 +600,7 @@ body {
 }
 
 .item-name {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: bold;
   color: var(--matcha-green);
   margin: 0;
@@ -461,7 +608,7 @@ body {
 
 .item-location,
 .item-details {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: var(--dark-gray);
   margin: 0.25rem 0 0 0;
 }
@@ -486,7 +633,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  min-width: 100px;
+  flex-shrink: 0;
 }
 
 .expiry-badge {
@@ -507,15 +656,17 @@ body {
   background: var(--strawberry-pink);
   color: var(--soft-white);
   border: none;
-  border-radius: 15px;
-  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  padding: 0.4rem 0.6rem;
   font-family: var(--font-primary);
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.2rem;
+  white-space: nowrap;
+  min-width: fit-content;
 }
 
 .share-btn:hover {
@@ -1600,9 +1751,181 @@ input:checked+.toggle-slider:before {
 .nav-button,
 .kawaii-button,
 .action-btn,
-.share-btn {
+.share-btn,
+.settings-icon,
+.notification-badge {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  outline: none;
+}
+
+.nav-button:focus,
+.kawaii-button:focus,
+.action-btn:focus,
+.share-btn:focus,
+.settings-icon:focus,
+.notification-badge:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.nav-button:active,
+.kawaii-button:active,
+.action-btn:active,
+.share-btn:active,
+.settings-icon:active,
+.notification-badge:active {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.add-item-modal {
+  background: var(--soft-white);
+  border-radius: 20px;
+  padding: 0;
+  max-width: 400px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--strawberry-light);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.5rem 0 1.5rem;
+  border-bottom: 1px solid var(--light-gray);
+  margin-bottom: 1.5rem;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: var(--dark-gray);
+  font-family: var(--font-primary);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--medium-gray);
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: var(--strawberry-pastel);
+  color: var(--strawberry-pink);
+  transform: scale(1.1);
+}
+
+.modal-content {
+  padding: 0 1.5rem;
+}
+
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--dark-gray);
+  font-weight: 600;
+  font-family: var(--font-primary);
+}
+
+.kawaii-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--strawberry-light);
+  border-radius: 15px;
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  background: var(--soft-white);
+  color: var(--dark-gray);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.kawaii-input:focus {
+  border-color: var(--strawberry-pink);
+  box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+}
+
+.kawaii-input::placeholder {
+  color: var(--medium-gray);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-top: 1px solid var(--light-gray);
+  margin-top: 1.5rem;
+}
+
+.modal-actions .kawaii-button {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+}
+
+.modal-actions .kawaii-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Dark mode modal styles */
+.dark-mode .add-item-modal {
+  background: var(--dark-card);
+  border-color: var(--dark-border);
+}
+
+.dark-mode .modal-header {
+  border-color: var(--dark-border);
+}
+
+.dark-mode .modal-header h3 {
+  color: var(--dark-text);
+}
+
+.dark-mode .kawaii-input {
+  background: var(--dark-card);
+  border-color: var(--dark-border);
+  color: var(--dark-text);
+}
+
+.dark-mode .kawaii-input:focus {
+  border-color: var(--strawberry-pink);
+}
+
+.dark-mode .modal-actions {
+  border-color: var(--dark-border);
 }
 
 /* Mobile-specific adjustments */
@@ -1655,7 +1978,33 @@ input:checked+.toggle-slider:before {
 
   .expiring-item,
   .inventory-item {
-    padding: 0.75rem;
+    padding: 0.6rem;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .item-info {
+    margin: 0.5rem 0;
+  }
+
+  .item-status {
+    align-items: stretch;
+    min-width: auto;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .share-btn {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.65rem;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .expiry-badge {
+    font-size: 0.65rem;
+    padding: 0.15rem 0.4rem;
   }
 
   .item-actions {
@@ -1711,11 +2060,199 @@ input:checked+.toggle-slider:before {
 }
 
 /* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --soft-white: #1a1a1a;
-    --light-gray: #2a2a2a;
-    --medium-gray: #888;
-    --dark-gray: #fff;
-  }
+.dark-mode {
+  --soft-white: var(--dark-bg);
+  --light-gray: var(--dark-surface);
+  --medium-gray: var(--dark-text-secondary);
+  --dark-gray: var(--dark-text);
+  --cream: var(--dark-card);
+  --earth-brown: var(--dark-text);
+  --warm-gray: var(--dark-text-secondary);
+}
+
+.dark-mode body {
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  color: var(--dark-text);
+}
+
+.dark-mode .app {
+  background: var(--dark-bg);
+  color: var(--dark-text);
+}
+
+.dark-mode .app-header {
+  background: var(--dark-surface);
+  border-bottom: 1px solid var(--dark-border);
+}
+
+.dark-mode .kawaii-card {
+  background: var(--dark-card);
+  border: 2px solid var(--dark-border);
+  color: var(--dark-text);
+}
+
+
+.dark-mode .summary-card {
+  background: var(--dark-card);
+  border: 2px solid var(--dark-border);
+}
+
+
+.dark-mode .summary-card:hover {
+  border-color: var(--strawberry-pink);
+  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.2);
+}
+
+.dark-mode .expiring-item,
+.dark-mode .inventory-item {
+  background: var(--dark-card);
+  border: 2px solid var(--dark-border);
+}
+
+
+.dark-mode .expiring-item:hover,
+.dark-mode .inventory-item:hover {
+  border-color: var(--strawberry-pink);
+  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.2);
+}
+
+.dark-mode .item-name {
+  color: var(--matcha-green);
+}
+
+.dark-mode .item-location,
+.dark-mode .item-details {
+  color: var(--dark-text-secondary);
+}
+
+.dark-mode .bottom-nav {
+  background: var(--dark-surface);
+  border-top: 1px solid var(--dark-border);
+}
+
+.dark-mode .nav-button {
+  color: var(--dark-text-secondary);
+}
+
+.dark-mode .nav-button.active {
+  background: linear-gradient(135deg, var(--strawberry-pink), var(--matcha-green));
+  color: var(--soft-white);
+}
+
+.dark-mode .nav-icon {
+  stroke: var(--dark-text-secondary);
+}
+
+.dark-mode .nav-button.active .nav-icon {
+  stroke: var(--soft-white);
+}
+
+.dark-mode .notification-item {
+  background: var(--dark-card);
+  border: 1px solid var(--dark-border);
+}
+
+.dark-mode .notification-item.unread {
+  background: #2a1a1a;
+  border-left: 4px solid var(--strawberry-pink);
+}
+
+.dark-mode .setting-item {
+  border-bottom: 1px solid var(--dark-border);
+}
+
+.dark-mode .info-item {
+  border-bottom: 1px solid var(--dark-border);
+}
+
+.dark-mode .danger-zone {
+  background: #2a1a1a;
+  border: 2px solid #ef5350;
+}
+
+.dark-mode .camera-modal {
+  background: rgba(0, 0, 0, 0.95);
+}
+
+.dark-mode .camera-controls {
+  background: var(--dark-surface);
+}
+
+.dark-mode .toggle-switch input:checked+.toggle-slider {
+  background-color: var(--strawberry-pink);
+}
+
+.dark-mode .kawaii-input {
+  background: var(--dark-card);
+  border: 2px solid var(--dark-border);
+  color: var(--dark-text);
+}
+
+.dark-mode .kawaii-input:focus {
+  border-color: var(--strawberry-pink);
+}
+
+.dark-mode .filter-btn {
+  background: var(--dark-card);
+  border: 2px solid var(--dark-border);
+  color: var(--dark-text);
+}
+
+.dark-mode .filter-btn.active {
+  background: linear-gradient(135deg, var(--strawberry-pink), var(--matcha-green));
+  color: var(--soft-white);
+}
+
+.dark-mode .support-btn {
+  background: var(--dark-card);
+  border: 2px solid var(--dark-border);
+  color: var(--dark-text);
+}
+
+.dark-mode .danger-btn {
+  background: #ef5350;
+  color: var(--soft-white);
+}
+
+.dark-mode .mark-all-btn {
+  background: var(--strawberry-pink);
+  color: var(--soft-white);
+}
+
+.dark-mode .mark-read-btn {
+  background: var(--matcha-green);
+  color: var(--soft-white);
+}
+
+.dark-mode .action-btn {
+  background: var(--dark-card);
+  color: var(--dark-text);
+  border: 1px solid var(--dark-border);
+}
+
+.dark-mode .use-btn {
+  background: var(--matcha-green);
+  color: var(--soft-white);
+}
+
+.dark-mode .share-btn {
+  background: var(--strawberry-pink);
+  color: var(--soft-white);
+}
+
+.dark-mode .remove-btn {
+  background: #ef5350;
+  color: var(--soft-white);
+}
+
+.dark-mode .bell-icon {
+  stroke: var(--dark-text-secondary);
+}
+
+.dark-mode .settings-icon {
+  stroke: var(--dark-text-secondary);
+}
+
+.dark-mode .settings-icon:hover {
+  stroke: var(--strawberry-pink);
 }
