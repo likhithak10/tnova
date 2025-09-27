@@ -1,34 +1,86 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
+// Import page components
+import HomePage from './pages/HomePage'
+import InventoryPage from './pages/InventoryPage'
+import CommunityPage from './pages/CommunityPage'
+import StatsPage from './pages/StatsPage'
+
+type Page = 'home' | 'inventory' | 'community' | 'stats'
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [currentPage, setCurrentPage] = useState<Page>('home')
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'home':
+        return <HomePage />
+      case 'inventory':
+        return <InventoryPage />
+      case 'community':
+        return <CommunityPage />
+      case 'stats':
+        return <StatsPage />
+      default:
+        return <HomePage />
+    }
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="app">
+      <div className="app-header">
+        <div className="header-top">
+          <div className="app-branding">
+            <span className="kawaii-icon">🍓</span>
+            <h1 className="app-title">Cook-e-Nova</h1>
+          </div>
+          <div className="header-actions">
+            <div className="notification-badge">
+              <span className="bell-icon">🔔</span>
+              <span className="badge-count">3</span>
+            </div>
+            <span className="settings-icon">⚙️</span>
+          </div>
+        </div>
+        <p className="app-subtitle">Smart Grocery Companion</p>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+
+      <main className="app-content">
+        {renderPage()}
+      </main>
+
+      <nav className="bottom-nav">
+        <button
+          className={`nav-button ${currentPage === 'home' ? 'active' : ''}`}
+          onClick={() => setCurrentPage('home')}
+        >
+          <span className="nav-icon">📸</span>
+          <span className="nav-label">Scan</span>
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+        <button
+          className={`nav-button ${currentPage === 'inventory' ? 'active' : ''}`}
+          onClick={() => setCurrentPage('inventory')}
+        >
+          <span className="nav-icon">📦</span>
+          <span className="nav-label">Inventory</span>
+        </button>
+        <button
+          className={`nav-button ${currentPage === 'community' ? 'active' : ''}`}
+          onClick={() => setCurrentPage('community')}
+        >
+          <span className="nav-icon">🤝</span>
+          <span className="nav-label">Share</span>
+        </button>
+        <button
+          className={`nav-button ${currentPage === 'stats' ? 'active' : ''}`}
+          onClick={() => setCurrentPage('stats')}
+        >
+          <span className="nav-icon">📊</span>
+          <span className="nav-label">Stats</span>
+        </button>
+      </nav>
+    </div>
   )
 }
 
