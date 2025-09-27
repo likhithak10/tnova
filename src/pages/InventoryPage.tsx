@@ -10,7 +10,7 @@ interface GroceryItem {
 }
 
 const InventoryPage = () => {
-  const [items, setItems] = useState<GroceryItem[]>([
+  const [items] = useState<GroceryItem[]>([
     {
       id: '1',
       name: 'Fresh Strawberries',
@@ -47,7 +47,7 @@ const InventoryPage = () => {
 
   const [filter, setFilter] = useState<'all' | 'fresh' | 'expiring-soon' | 'expired'>('all')
 
-  const filteredItems = items.filter(item => 
+  const filteredItems = items.filter(item =>
     filter === 'all' || item.status === filter
   )
 
@@ -73,27 +73,27 @@ const InventoryPage = () => {
     <div className="inventory-page">
       <div className="kawaii-card">
         <h2>🥬 Your Grocery Inventory</h2>
-        
+
         <div className="filter-buttons">
-          <button 
+          <button
             className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
             onClick={() => setFilter('all')}
           >
             All Items
           </button>
-          <button 
+          <button
             className={`filter-btn ${filter === 'fresh' ? 'active' : ''}`}
             onClick={() => setFilter('fresh')}
           >
             Fresh
           </button>
-          <button 
+          <button
             className={`filter-btn ${filter === 'expiring-soon' ? 'active' : ''}`}
             onClick={() => setFilter('expiring-soon')}
           >
             Expiring Soon
           </button>
-          <button 
+          <button
             className={`filter-btn ${filter === 'expired' ? 'active' : ''}`}
             onClick={() => setFilter('expired')}
           >
@@ -111,25 +111,25 @@ const InventoryPage = () => {
                 <h4>{item.name}</h4>
                 <p className="item-category">{item.category}</p>
               </div>
-              <div 
+              <div
                 className="status-badge"
                 style={{ backgroundColor: getStatusColor(item.status) }}
               >
                 {getStatusText(item.status)}
               </div>
             </div>
-            
+
             <div className="item-details">
               <p className="expiry-date">
                 📅 Expires: {new Date(item.expiryDate).toLocaleDateString()}
               </p>
-              
+
               {item.status === 'expiring-soon' && (
                 <div className="expiry-warning">
                   ⚠️ Use this item soon!
                 </div>
               )}
-              
+
               {item.status === 'expired' && (
                 <div className="expired-warning">
                   🚫 This item has expired

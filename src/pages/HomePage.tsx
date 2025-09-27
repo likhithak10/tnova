@@ -1,14 +1,46 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 const HomePage = () => {
     const [isScanning, setIsScanning] = useState(false)
     const [scannedItems, setScannedItems] = useState<string[]>([])
+    const [showCamera, setShowCamera] = useState(false)
+    const [showUpload] = useState(false)
+    const fileInputRef = useRef<HTMLInputElement>(null)
 
     const handleScanReceipt = () => {
+        setShowCamera(true)
+    }
+
+    const handleUploadPhoto = () => {
+        setShowUpload(true)
+        fileInputRef.current?.click()
+    }
+
+    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0]
+        if (file) {
+            setIsScanning(true)
+            // Simulate OCR processing
+            setTimeout(() => {
+                setIsScanning(false)
+                setShowUpload(false)
+                setScannedItems([
+                    '🍓 Fresh Strawberries',
+                    '🥬 Organic Spinach',
+                    '🥕 Carrots',
+                    '🍞 Whole Grain Bread',
+                    '🥛 Almond Milk'
+                ])
+            }, 2000)
+        }
+    }
+
+    const handleCameraCapture = () => {
         setIsScanning(true)
-        // Simulate scanning process
+        // Simulate camera capture and OCR
         setTimeout(() => {
             setIsScanning(false)
+            setShowCamera(false)
             setScannedItems([
                 '🍓 Fresh Strawberries',
                 '🥬 Organic Spinach',
@@ -127,18 +159,56 @@ const HomePage = () => {
                         {isScanning ? (
                             <div className="scanning-animation">
                                 <div className="camera-icon">📷</div>
-                                <p>Scanning receipt...</p>
+                                <p>Processing receipt with OCR...</p>
                                 <div className="loading-dots">
                                     <span>.</span><span>.</span><span>.</span>
                                 </div>
                             </div>
+                        ) : showCamera ? (
+                            <div className="camera-modal">
+                                <div className="camera-preview">
+                                    <div className="camera-overlay">
+                                        <div className="scan-frame"></div>
+                                        <p>Position receipt within the frame</p>
+                                    </div>
+                                </div>
+                                <div className="camera-controls">
+                                    <button
+                                        className="camera-btn cancel-btn"
+                                        onClick={() => setShowCamera(false)}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        className="camera-btn capture-btn"
+                                        onClick={handleCameraCapture}
+                                    >
+                                        📸 Capture
+                                    </button>
+                                </div>
+                            </div>
                         ) : (
-                            <button
-                                className="kawaii-button scan-button"
-                                onClick={handleScanReceipt}
-                            >
-                                📸 Scan Receipt
-                            </button>
+                            <div className="scan-options">
+                                <button
+                                    className="kawaii-button scan-button"
+                                    onClick={handleScanReceipt}
+                                >
+                                    📸 Take Photo
+                                </button>
+                                <button
+                                    className="kawaii-button secondary-button"
+                                    onClick={handleUploadPhoto}
+                                >
+                                    📁 Upload Photo
+                                </button>
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleFileUpload}
+                                    style={{ display: 'none' }}
+                                />
+                            </div>
                         )}
                     </div>
 
