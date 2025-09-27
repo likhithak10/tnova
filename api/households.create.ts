@@ -8,17 +8,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ ok: false, error: 'Method not allowed' });
 
-  const { offerId } = req.body || {};
-  if (!offerId) return res.status(400).json({ ok: false, error: 'offerId required' });
+  const { name } = req.body || {};
+  if (!name) return res.status(400).json({ ok: false, error: 'name required' });
 
   const db = await getDb();
-  const r = await db.collection('share_offers').updateOne(
-    { _id: new ObjectId(offerId), claimedBy: null },
-    { $set: { claimedBy: true } }
-  );
-
-  if (r.matchedCount === 0) {
-    return res.status(200).json({ ok: true, claimed: false, reason: 'already-claimed-or-missing' });
-  }
-  return res.status(200).json({ ok: true, claimed: true });
+  const now = new Date();
+  const doc = { name, createdAt: now };
+  const r = await db.collection('households').insertOne(doc);
+  return res.status(200).json({ ok: true, householdId: r.insertedId });
 }
+
+

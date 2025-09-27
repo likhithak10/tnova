@@ -7,18 +7,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'GET') return res.status(405).json({ ok: false, error: 'Method not allowed' });
 
-  const { days = '3' } = req.query as { days?: string };
+  const { q = '', storage, limit = '50' } = req.query as {
+    q?: string;
+    storage?: string;
+    limit?: string;
+  };
 
   const db = await getDb();
-  const now = new Date();
-  const to = new Date(now);
-  to.setDate(now.getDate() + Number(days));
+  const filter: any = {};
+  const trimmed = (q || '').trim();
+  if (trimmed) {
+    filter.displayName = { $regex: trimmed, $options: 'i' };
+  }
+  if (storage) {
+    filter.storage = storage;
+  }
 
+  const num = Math.max(1, Math.min(200, Number(limit) || 50));
   const items = await db.collection('items')
-    .find({ expiryDate: { $gte: now, $lte: to } })
-    .sort({ expiryDate: 1 })
-    .limit(50)
+    .find(filter)
+    .sort({ updatedAt: -1 })
+    .limit(num)
     .toArray();
 
   return res.status(200).json({ ok: true, items });
 }
+
+

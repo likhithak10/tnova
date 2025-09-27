@@ -7,18 +7,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'GET') return res.status(405).json({ ok: false, error: 'Method not allowed' });
 
-  const { days = '3' } = req.query as { days?: string };
+  const { userId = '68d78e0e2ca517490573a721' } = req.query as { userId?: string };
 
   const db = await getDb();
-  const now = new Date();
-  const to = new Date(now);
-  to.setDate(now.getDate() + Number(days));
+  const filter: any = { userId };
 
-  const items = await db.collection('items')
-    .find({ expiryDate: { $gte: now, $lte: to } })
-    .sort({ expiryDate: 1 })
+  const results = await db.collection('notifications')
+    .find(filter)
+    .sort({ createdAt: -1 })
     .limit(50)
     .toArray();
 
-  return res.status(200).json({ ok: true, items });
+  return res.status(200).json({ ok: true, notifications: results });
 }
+
+
