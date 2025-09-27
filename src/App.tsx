@@ -75,14 +75,14 @@ function App() {
               <h1 className="app-title">Cook-e-Nova</h1>
             </div>
             <div className="header-actions">
-              <button 
+              <button
                 className="notification-badge"
                 onClick={() => setCurrentPage('notifications')}
               >
                 <BellIcon className="bell-icon" size={18} />
                 <span className="badge-count">3</span>
               </button>
-              <button 
+              <button
                 className="settings-button"
                 onClick={() => setCurrentPage('settings')}
               >
