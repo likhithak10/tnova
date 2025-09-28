@@ -24,5 +24,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (r.matchedCount === 0) {
     return res.status(200).json({ ok: true, claimed: false, reason: 'already-claimed-or-missing' });
   }
+  try {
+    const offer = await db.collection('share_offers').findOne({ _id: new ObjectId(offerId) });
+    if (offer?.itemId) {
+      await db.collection('items').updateOne(
+        { _id: offer.itemId },
+        { $set: { offered: false, ownerId: CURRENT_USER_ID } }
+      );
+    }
+  } catch {}
   return res.status(200).json({ ok: true, claimed: true });
 }

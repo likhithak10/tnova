@@ -1,0 +1,331 @@
+:root {
+  --font-size: 16px;
+  /* Soft Kawaii Strawberry Matcha Theme */
+  --background: #fefcfc;
+  --foreground: #5a6b4a;
+  --card: #ffffff;
+  --card-foreground: #5a6b4a;
+  --popover: #ffffff;
+  --popover-foreground: #5a6b4a;
+  --primary: #f8a5c2;
+  --primary-foreground: #ffffff;
+  --secondary: #e8f5e8;
+  --secondary-foreground: #4a6b4a;
+  --muted: #f9fcf9;
+  --muted-foreground: #8a9b7a;
+  --accent: #fdeef1;
+  --accent-foreground: #d4839f;
+  --destructive: #f5a5a5;
+  --destructive-foreground: #ffffff;
+  --border: rgba(248, 165, 194, 0.15);
+  --input: transparent;
+  --input-background: #ffffff;
+  --switch-background: #fdeef1;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #f8a5c2;
+  --chart-1: #f8a5c2;
+  --chart-2: #a8d5a8;
+  --chart-3: #c8e6c8;
+  --chart-4: #f5c2d3;
+  --chart-5: #d8f0d8;
+  --radius: 1rem;
+  --sidebar: #f9fcf9;
+  --sidebar-foreground: #5a6b4a;
+  --sidebar-primary: #f8a5c2;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #fdeef1;
+  --sidebar-accent-foreground: #d4839f;
+  --sidebar-border: rgba(248, 165, 194, 0.15);
+  --sidebar-ring: #f8a5c2;
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+html { font-size: var(--font-size); }
+
+/* Base */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Sniglet", "Cabin", ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color: var(--foreground);
+  background: #e7e7ea;
+}
+
+h1, h2, h3, h4, p, label, button, input { line-height: 1.5; }
+h1 { font-size: 1.5rem; font-weight: var(--font-weight-medium); }
+h2 { font-size: 1.25rem; font-weight: var(--font-weight-medium); }
+h3 { font-size: 1.125rem; font-weight: var(--font-weight-medium); }
+h4 { font-size: 1rem; font-weight: var(--font-weight-medium); }
+p, label, input, button { font-size: 1rem; }
+
+/* Forms */
+.field { display: grid; gap: 6px; }
+.input {
+  appearance: none;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--input-background);
+  color: var(--foreground);
+}
+.input::placeholder { color: #9aa799; }
+.btn.primary { background: var(--primary); color: var(--primary-foreground); }
+
+/* Make scanner button texts match welcome styles */
+.scanner-card .btn {
+  font-family: "Sniglet", "Cabin", ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font-weight: var(--font-weight-normal);
+  color: var(--muted-foreground);
+  background: #e4f0d6; /* light matcha for Take Photo & Upload */
+}
+.scanner-card .btn.primary {
+  font-family: "Sniglet", "Cabin", ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font-weight: var(--font-weight-medium);
+}
+.btn.full { width: 100%; justify-content: center; }
+
+/* Utility */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; clip-path: inset(50%); }
+
+/* iPhone-like viewport wrapper */
+.viewport-center {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.device {
+  width: 390px; /* iPhone 15 width */
+  height: 844px; /* iPhone 15 height */
+  border-radius: 36px;
+  background: var(--background);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15), 0 3px 10px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.device-content {
+  flex: 1;
+  overflow: auto;
+  padding: 20px 14px 80px; /* bottom space for tabbar */
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  background: #e4f0d6; /* light matcha green */
+  position: relative;
+}
+.topbar .brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e07ea6;
+}
+.topbar .brand-title {
+  font-size: 24px;
+  font-weight: 480;
+  position: relative;
+}
+.topbar .brand-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px; /* thinner */
+  background: #b25f5f; /* requested matcha green */
+  border-radius: 999px; /* rounded ends */
+  bottom: -2px;
+}
+.topbar .spacer { flex: 1; }
+.icon-btn {
+  width: 32px; height: 32px; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--accent);
+  display: grid; place-items: center;
+  position: relative;
+}
+.icon-btn::after {
+  content: '';
+  position: absolute;
+  inset: -4px; /* outer ring size */
+  border-radius: 999px;
+  border: 2px solid #e07ea6; /* darker pink ring */
+  pointer-events: none;
+}
+.badge {
+  position: absolute;
+  top: -6px; right: -6px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: 999px;
+  font-size: 10px; line-height: 1;
+  padding: 4px 6px;
+  border: 1px solid var(--border);
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 16px;
+  margin: 12px 10px;
+  box-shadow: 0 2px 10px rgba(248,165,194,0.08);
+}
+
+.welcome-card {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+.welcome-media img { width: 64px; height: 64px; border-radius: 14px; object-fit: cover; }
+.welcome-card h3 { margin: 0; color: #e07ea6; }
+.welcome-card p { margin: 4px 0 0; color: var(--muted-foreground); }
+
+.scanner-card h4 { margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.5rem; text-align: center; }
+.scanner-card p { margin: 4px 0 12px; color: var(--muted-foreground); text-align: center; }
+.preview-box {
+  width: 180px; height: 180px; border-radius: 18px; border: 1px solid var(--border);
+  background: #fff; display: grid; place-items: center; overflow: hidden;
+  margin: 6px 0 12px;
+}
+.preview-box img { width: 100%; height: 100%; object-fit: cover; }
+
+.actions {
+  display: flex; gap: 12px; margin-top: 4px; width: 100%;
+}
+.actions-center { justify-content: center; }
+/* Ensure scanner actions center even without helper class */
+.scanner-card .actions { justify-content: center; }
+.btn {
+  padding: 10px 16px; border-radius: 999px; border: 1px solid var(--border);
+  font-weight: var(--font-weight-normal); cursor: pointer; background: var(--secondary); color: var(--secondary-foreground);
+  font-family: "Sniglet", "Cabin", ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+.btn.primary { background: var(--primary); color: var(--primary-foreground); font-weight: var(--font-weight-medium); }
+
+/* Button interactive states */
+.btn,
+.btn.primary {
+  transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 60ms ease;
+}
+.btn:hover { background: #dff0df; }
+.btn:active { transform: translateY(0.5px); }
+.btn.primary:hover { filter: brightness(1.05); }
+.btn.primary:active { transform: translateY(0.5px); }
+.btn:focus-visible,
+.btn.primary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(248,165,194,0.35);
+}
+.btn:disabled,
+.btn[disabled],
+.btn.primary:disabled,
+.btn.primary[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: grayscale(10%);
+}
+
+.tabbar {
+  position: sticky; bottom: 0; left: 0; right: 0;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0; padding: 10px 18px 18px; background: #ddedca; /* light matcha green */ border-top: 1px solid var(--border);
+}
+.tab-item {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  background: transparent; border: none; padding: 6px 0; cursor: pointer;
+}
+.tab-item .label { font-size: 12px; color: #5a6b4a; }
+
+/* Icon button interactive states */
+.icon-btn { transition: background-color 180ms ease, transform 60ms ease, box-shadow 180ms ease; }
+.icon-btn:hover { background: #ffe6ec; }
+.icon-btn:active { transform: translateY(0.5px); }
+.icon-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(248,165,194,0.35); }
+
+/* Masked monochrome icons so we can tint with background-color */
+.icon { width: 22px; height: 22px; display: inline-block; background-color: #5a6b4a; }
+.icon.scan { -webkit-mask: url('/scan-icon.png') no-repeat center / contain; mask: url('/scan-icon.png') no-repeat center / contain; }
+.icon.inventory { -webkit-mask: url('/inventory-icon.png') no-repeat center / contain; mask: url('/inventory-icon.png') no-repeat center / contain; }
+.icon.share { -webkit-mask: url('/share-icon.png') no-repeat center / contain; mask: url('/share-icon.png') no-repeat center / contain; }
+
+/* Active pill */
+/* Remove old active pill; use underline instead */
+.tab-item.active .label { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; }
+
+/* Tab hover/focus effects */
+.tab-item { transition: color 180ms ease; }
+.tab-item .icon { transition: background-color 180ms ease, transform 180ms ease; }
+.tab-item:hover .icon { transform: translateY(-1px); background-color: #3d5233; }
+.tab-item:hover .label { color: #3d5233; }
+.tab-item:focus-visible { outline: none; }
+.tab-item:focus-visible .label { text-decoration: underline; text-underline-offset: 4px; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .btn, .btn.primary, .icon-btn, .tab-item .icon { transition: none; }
+}
+
+/* Settings popover */
+.menu-pop {
+  position: absolute;
+  top: 56px;
+  right: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  padding: 8px;
+  min-width: 160px;
+  z-index: 20;
+}
+.menu-pop .menu-title { font-weight: 400; color: #d4839f; margin: 6px 8px 8px; }
+.menu-pop .menu-actions { display: grid; gap: 8px; }
+.menu-pop .btn { font-family: "Sniglet", "Cabin", ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+
+

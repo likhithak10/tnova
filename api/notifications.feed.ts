@@ -14,7 +14,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const userIdStr = await getUserIdFromRequest(req);
   if (!userIdStr) return res.status(401).json({ ok: false, error: 'Unauthorized' });
   const currentUserId = new ObjectId(userIdStr);
-  const filter: any = { householdId: HOUSEHOLD_ID, userId: { $in: [currentUserId, null] } };
+  const filter: any = { householdId: HOUSEHOLD_ID, userId: { $in: [currentUserId, null] }, $or: [ { seenByUserIds: { $ne: currentUserId } }, { seenByUserIds: { $exists: false } } ] };
 
   const results = await db.collection('notifications')
     .find(filter)

@@ -35,10 +35,26 @@ export type ItemDoc = {
 
 const API_BASE = (import.meta as any).env?.VITE_API_BASE || '';
 
+function asHeaderObject(h?: HeadersInit): Record<string,string> {
+  if (!h) return {};
+  if (h instanceof Headers) {
+    const out: Record<string,string> = {};
+    h.forEach((v,k)=>{ out[k]=v; });
+    return out;
+  }
+  if (Array.isArray(h as any)) {
+    const out: Record<string,string> = {};
+    for (const [k,v] of (h as any)) out[String(k)] = String(v);
+    return out;
+  }
+  return { ...(h as any) };
+}
+
 async function http<T>(path: string, init?: RequestInit): Promise<T> {
   // Read token from a global hook set by src/lib/auth.ts to avoid a direct import
   const token: string | null = (globalThis as any)?.__getAccessToken?.() ?? null;
-  const headers: any = { 'Content-Type': 'application/json', ...(init?.headers || {}) };
+  const baseHeaders = asHeaderObject(init?.headers);
+  const headers: any = { 'Content-Type': 'application/json', ...baseHeaders };
   if (token) headers.Authorization = `Bearer ${token}`;
 
   const res = await fetch(API_BASE + path, { ...(init || {}), headers });
@@ -95,6 +111,11 @@ export const Api = {
       { method: 'POST', body: JSON.stringify({ offerId }) }
     ),
 
+  listOffers: () =>
+    http<{ ok: boolean; offers: Array<{ _id: string; itemId: string; qtyOffered: number; claimedBy: string | null; item: { _id: string; displayName: string; expiryDate?: string | null; ownerId?: string | null } | null }> }>(
+      '/api/share-offers.list'
+    ),
+
   createNotification: (userId: string | null, type: string, payload: any) =>
     http<{ ok: boolean; notificationId: string }>(
       '/api/notifications.create',
@@ -103,6 +124,12 @@ export const Api = {
 
   notificationsFeed: () =>
     http<{ ok: boolean; notifications: any[] }>(`/api/notifications.feed`),
+
+  markNotificationsSeen: (ids: string[]) =>
+    http<{ ok: boolean; updated: number }>(
+      '/api/notifications.mark-seen',
+      { method: 'POST', body: JSON.stringify({ ids }) }
+    ),
 
   householdsCreate: (name: string) =>
     http<{ ok: boolean; householdId: string }>(
