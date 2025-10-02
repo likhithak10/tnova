@@ -1,6 +1,6 @@
 # Interface Snapshots
 
-## Screenshots  
+## Check out what our mobile app interface looks like  
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/b571d798-e152-4454-9110-a0a93a2fd364" width="250" />
